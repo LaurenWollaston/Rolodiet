@@ -1,0 +1,43 @@
+[
+    {
+      "name": "Spaghetti Bolognese",
+      "recipeText": "Ingredients:\n- 250g spaghetti\n- 400g ground beef\n- 1 onion, chopped\n- 2 cloves of garlic, minced\n- 400g canned tomatoes\n- 2 tablespoons tomato paste\n- 1 teaspoon dried oregano\n- Salt and pepper to taste\n\nInstructions:\n1. Cook the spaghetti according to the package instructions.\n2. In a large pan, cook the ground beef, onion, and garlic until browned.\n3. Add the canned tomatoes, tomato paste, dried oregano, salt, and pepper. Simmer for 15 minutes.\n4. Serve the sauce over the cooked spaghetti.\n",
+      "author": "John Smith",
+      "tags": ["pasta", "Italian"]
+    },
+    {
+      "name": "Chicken Curry",
+      "recipeText": "Ingredients:\n- 500g chicken pieces\n- 1 onion, chopped\n- 2 cloves of garlic, minced\n- 2 tablespoons curry powder\n- 400ml coconut milk\n- 1 red bell pepper, sliced\n- Salt and pepper to taste\n\nInstructions:\n1. Heat oil in a pan and cook the chicken until browned. Set aside.\n2. In the same pan, sauté the onion and garlic until fragrant.\n3. Add the curry powder and cook for a minute.\n4. Pour in the coconut milk and simmer for 10 minutes.\n5. Add the chicken and red bell pepper. Cook for another 10 minutes.\n6. Season with salt and pepper.\n7. Serve with rice.\n",
+      "author": "Jane Doe",
+      "tags": ["curry", "chicken"]
+    },
+    {
+      "name": "Chocolate Chip Cookies",
+      "recipeText": "Ingredients:\n- 1 cup butter, softened\n- 1 cup granulated sugar\n- 1 cup brown sugar\n- 2 eggs\n- 1 teaspoon vanilla extract\n- 3 cups all-purpose flour\n- 1 teaspoon baking soda\n- 1/2 teaspoon salt\n- 2 cups chocolate chips\n\nInstructions:\n1. Preheat the oven to 375°F (190°C).\n2. In a mixing bowl, cream together the butter, granulated sugar, and brown sugar until smooth.\n3. Beat in the eggs one at a time, then stir in the vanilla extract.\n4. In a separate bowl, combine the flour, baking soda, and salt. Gradually add the dry ingredients to the creamed mixture.\n5. Stir in the chocolate chips.\n6. Drop rounded tablespoonfuls of dough onto ungreased baking sheets.\n7. Bake for 8 to 10 minutes or until lightly golden brown.\n8. Cool on wire racks.\n",
+      "author": "Emily Johnson",
+      "tags": ["cookies", "dessert"]
+    },
+    {
+      "name": "Caesar Salad",
+      "recipeText": "Ingredients:\n- 1 head romaine lettuce, torn into bite-size pieces\n- 1/2 cup Caesar dressing\n- 1/2 cup croutons\n- 1/4 cup grated Parmesan cheese\n- Salt and pepper to taste\n\nInstructions:\n1. In a large bowl, combine the romaine lettuce, Caesar dressing, croutons, Parmesan cheese, salt, and pepper.\n2. Toss until the lettuce is evenly coated with the dressing.\n3. Serve immediately.\n",
+      "author": "Michael Thompson",
+      "tags": ["salad"]
+    },
+    {
+      "name": "Beef Stir-Fry",
+      "recipeText": "Ingredients:\n- 500g beef sirloin, sliced\n- 2 tablespoons soy sauce\n- 2 tablespoons oyster sauce\n- 1 tablespoon cornstarch\n- 1 tablespoon vegetable oil\n- 1 onion, sliced\n- 1 bell pepper, sliced\n- 2 cloves of garlic, minced\n- Salt and pepper to taste\n\nInstructions:\n1. In a bowl, marinate the beef slices with soy sauce, oyster sauce, and cornstarch for 15 minutes.\n2. Heat the vegetable oil in a pan or wok over high heat.\n3. Add the marinated beef slices and stir-fry until browned. Remove from the pan.\n4. In the same pan, sauté the onion, bell pepper, and garlic until crisp-tender.\n5. Return the beef to the pan and stir-fry for another minute.\n6. Season with salt and pepper.\n7. Serve with rice.\n",
+      "author": "David Wilson",
+      "tags": ["stir-fry", "beef"]
+    },
+    {
+      "name": "Caprese Salad",
+      "recipeText": "Ingredients:\n- 2 large tomatoes, sliced\n- 8 ounces fresh mozzarella cheese, sliced\n- 1/4 cup fresh basil leaves\n- 2 tablespoons extra-virgin olive oil\n- 2 tablespoons balsamic glaze\n- Salt and pepper to taste\n\nInstructions:\n1. Arrange the tomato slices and mozzarella cheese slices on a serving platter.\n2. Place a basil leaf on each tomato and cheese slice.\n3. Drizzle the olive oil and balsamic glaze over the salad.\n4. Season with salt and pepper.\n5. Serve immediately.\n",
+      "author": "Sophia Anderson",
+      "tags": ["salad", "Italian"]
+    },
+    {
+      "name": "Pancakes",
+      "recipeText": "Ingredients:\n- 1 cup all-purpose flour\n- 2 tablespoons granulated sugar\n- 2 teaspoons baking powder\n- 1/2 teaspoon salt\n- 1 cup milk\n- 1 egg\n- 2 tablespoons melted butter\n\nInstructions:\n1. In a mixing bowl, whisk together the flour, sugar, baking powder, and salt.\n2. In a separate bowl, whisk together the milk, egg, and melted butter.\n3. Pour the wet ingredients into the dry ingredients and stir until just combined.\n4. Heat a lightly oiled griddle or frying pan over medium-high heat.\n5. Pour or scoop the batter onto the griddle, using approximately 1/4 cup for each pancake.\n6. Cook until bubbles form on the surface, then flip and cook until browned on the other side.\n7. Serve hot with maple syrup.\n",
+      "author": "Oliver Davis",
+      "tags": ["breakfast", "pancakes"]
+    }]
