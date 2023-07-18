@@ -1,4 +1,5 @@
 import logo from './logo.svg';
+import Navbar from "./components/Navbar.js";
 import './App.css';
 import MainPage from './components/MainPage';
 import desktopBackground from './images/169.webp'
