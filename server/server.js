@@ -22,7 +22,11 @@ const server = new ApolloServer({
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('public'));
+
+// If in production, serve client/build as static assets
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/build')));
+}
 
 //Create instance of Apollo server with GraphQL schema
 const startApollo = async () => {
