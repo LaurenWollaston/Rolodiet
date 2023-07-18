@@ -13,7 +13,9 @@ const typeDefs = gql`
     type Recipe {
         recipeId: ID!
         cusine: String!
+        authors: [String]
         description: String!
+        ingredients: String!
         title: String!
         image: String
         link: String
@@ -38,8 +40,10 @@ const typeDefs = gql`
 
     input SaveRecipeInput {
         recipeId: String!
+        authors: [String]
         cusine: String!
-        description: String
+        description: String!
+        ingredients: String!
         title: String!
         image: String
         link: String
