@@ -1,10 +1,10 @@
 // name of dish (string, required), ingredients (array, required), 
-// recipe (string, req), author (string, req)
+// recipe (string, req), authors (string, req)
 
 const { Schema, model } = require('mongoose');
 
 const recipeSchema = new Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         unique: true,
@@ -15,13 +15,25 @@ const recipeSchema = new Schema({
             required: true,
         }
     ],
-    recipe: {
+    description: {
         type: String,
         required: true,
     },
-    author: {
+    recipeId: {
+        type: String,
+        required: true,
+    },
+    authors: [
+        {
+            type: String,
+        },
+    ],
+    image: {
         type: String,
     },
+    link: {
+        type: String,
+    }
     
 });
 
