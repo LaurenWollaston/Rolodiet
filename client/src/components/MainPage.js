@@ -24,11 +24,11 @@ const MainPage = () => {
     setSelectedCard(null);
   };
   const shiftDisplay = () => {
-    if (displayIndex2 <= recipesData.length) {
+    if (displayIndex2 < recipesData.length) {
       shiftDisplayIndex1((prevIndex) => prevIndex + 5);
       shiftDisplayIndex2((prevIndex) => prevIndex + 5);
     } else if (
-      displayIndex1 <= recipesData.length - 5 &&
+      displayIndex1 < recipesData.length - 5 &&
       displayIndex2 > recipesData.length - 5
     ) {
       shiftDisplayIndex1((prevIndex) => prevIndex + 5);
