@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    // Enabling introspection to allow Apollo Studio to query and fetch details about the GQL schema during development; introspection should not be enabled during production!
-    introspection: process.env.NODE_ENV !== 'production',
+    // Enabling introspection to allow Apollo Studio to query and fetch details about the GQL schema during development; introspection should be disabled on production build!
+    introspection: true,
     context: ({ req }) => ({
         user: authMiddleware(req).user
     })
