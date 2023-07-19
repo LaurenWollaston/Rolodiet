@@ -5,7 +5,7 @@ import './App.css';
 import MainPage from './components/MainPage';
 import Features from './components/Features';
 import About from './components/About';
-import desktopBackground from './images/169.webp';
+import desktopBackground from './images/backgrounder.webp';
 import mobileBackground from './images/mobile.webp';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <Router>
-      <div className="App" style={{backgroundImage: `url(${imageUrl})` }}>
+      <div className="App">
         <Navbar />
         <Routes>
           <Route path="/" element={<MainPage />} />
