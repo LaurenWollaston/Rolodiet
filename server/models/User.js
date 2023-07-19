@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const { Recipe } = require('./Recipe');
+const Recipe = require('./Recipe');
 
 const userSchema = new Schema(
   {
@@ -24,7 +24,12 @@ const userSchema = new Schema(
     },
 
     // set savedRecipes to be an array of data that adheres to recipeSchema
-    savedRecipes: [Recipe],
+    savedRecipes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipe'
+      }
+    ],
   },
   // Use the virtual defined below
   {
@@ -50,6 +55,11 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // when user is queried, a field called 'recipeCount' with the number of saved recipies will be returned with the query
+userSchema.virtual('recipeCount').get(
+  function () {
+    return this.savedRecipes.length;
+  }
+);
 
 const User = model('User', userSchema);
 

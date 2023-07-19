@@ -13,7 +13,7 @@ const resolvers = {
     Mutation: {
         // Create new user with signed webtoken and send to client
         createUser: async (_, { input }) => {
-            const user = await User.create(input);
+            const user = await User.create({ ...input, savedRecipes: [] });
 
             if(!user) {
                 throw new Error('Something went wrong!');

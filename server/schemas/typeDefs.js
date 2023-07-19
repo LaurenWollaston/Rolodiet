@@ -7,7 +7,7 @@ const typeDefs = gql`
         username: String!
         email: String!
         recipeCount: Int
-        savedBooks: [Recipe]
+        savedRecipes: [Recipe]
     }
 
     type Recipe {
@@ -51,6 +51,7 @@ const typeDefs = gql`
 
     type Query {
         me: User
+        user(_id: ID, username: String): User!
     }
 
     type Mutation {
