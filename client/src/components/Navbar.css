@@ -1,0 +1,24 @@
+/* Navbar.css */
+
+.custom-navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #343a40; /* Dark gray */
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); /* Shadow effect */
+    padding: 0.5rem 1rem; /* Vertical and horizontal padding */
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #f8f9fa !important; /* Light color text */
+}
+
+.nav-link {
+    color: #f8f9fa !important; /* Light color text */
+    margin-right: 0.5rem; /* Right margin */
+}
+
+.nav-link:hover {
+    color: #adb5bd !important; /* Light gray text on hover */
+}
