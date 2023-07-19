@@ -39,13 +39,11 @@ const MainPage = () => {
     }
   };
 
-
-
   return (
-    <div style={{ display: "flex"}}>
+    <div style={{ display: "flex" }}>
       {/* The cards */}
 
-      <div style={{ position:'absolute',zIndex:'0' }}>
+      <div style={{ position: "absolute", zIndex: "0" }}>
         {cards.slice(displayIndex1, displayIndex2).map((card) => (
           <RecipeCard
             key={card.name}
@@ -53,12 +51,31 @@ const MainPage = () => {
             onClick={() => handleCardClick(card)}
           />
         ))}
-        <button onClick={shiftDisplay}>More</button>
+        <button
+          onClick={shiftDisplay}
+          style={{
+            fontSize: "25px",
+            fontWeight: "700",
+            width: "70px",
+            height: "30px",
+            alignSelf: "end",
+            color: "rgb(244 239 82)",
+            border: "none",
+            backgroundColor: "rgb(255 255 255 / 5%)",
+            marginTop: "-19px",
+            // marginRight: "-19px",
+          }}
+        >
+          More
+        </button>
+        <div style={{ marginBottom: "-15px" }}> </div>
       </div>
 
       {/* The Modal */}
       {selectedCard && (
-        <div style={{zIndex:'3',marginLeft:'60vw',marginTop:'25vh'}}><Modal selectedCard={selectedCard} closeModal={closeModal} /></div>
+        <div style={{ zIndex: "3", marginLeft: "60vw", marginTop: "25vh" }}>
+          <Modal selectedCard={selectedCard} closeModal={closeModal} />
+        </div>
       )}
     </div>
   );
