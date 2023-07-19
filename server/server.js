@@ -11,13 +11,20 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+
+const PORT = process.env.PORT || 3001;
+
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => ({
-        user: authMiddleware(req).user
-    })
+    // Enabling introspection to allow Apollo Studio to query and fetch details about the GQL schema during development; introspection should be disabled on production build!
+    introspection: true,
+    context: ({ req }) => {
+        const context = authMiddleware(req);
+        return {
+            user: context ? context.user : null
+        };
+    }
 });
 
 
