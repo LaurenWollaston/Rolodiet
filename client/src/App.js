@@ -5,26 +5,8 @@ import './App.css';
 import MainPage from './components/MainPage';
 import Features from './components/Features';
 import About from './components/About';
-import desktopBackground from './images/backgrounder.webp';
-import mobileBackground from './images/mobile.webp';
 
 function App() {
-  const [imageUrl, setImageUrl] = useState(window.innerWidth >= 650 ? desktopBackground : mobileBackground);
-
-  // Update the image URL on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      setImageUrl(window.innerWidth >= 650 ? desktopBackground : mobileBackground);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener when the component unmounts
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <Router>
       <div className="App">
