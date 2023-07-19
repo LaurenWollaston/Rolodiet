@@ -55,6 +55,11 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // when user is queried, a field called 'recipeCount' with the number of saved recipies will be returned with the query
+userSchema.virtual('recipeCount').get(
+  function () {
+    return this.savedRecipes.length;
+  }
+);
 
 const User = model('User', userSchema);
 
