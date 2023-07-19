@@ -61,7 +61,7 @@ const MainPage = () => {
             alignSelf: "end",
             color: "rgb(244 239 82)",
             border: "none",
-            backgroundColor: "rgb(255 255 255 / 5%)",
+            backgroundColor: "rgb(0 0 0 / 67%)",
             marginTop: "-19px",
             // marginRight: "-19px",
           }}
