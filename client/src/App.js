@@ -30,9 +30,10 @@ function App() {
       <div className="App" style={{backgroundImage: `url(${imageUrl})` }}>
         <Navbar />
         <Routes>
-          <Route path="/home" element={<MainPage />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/features" element={<Features />} />
           <Route path="/about" element={<About />} />
+          <Route path="*" element={<MainPage />} />
         </Routes>
       </div>
     </Router>
