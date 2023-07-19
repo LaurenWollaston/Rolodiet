@@ -8,7 +8,7 @@ function App() {
   const imageUrl = window.innerWidth >= 650 ? desktopBackground : mobileBackground;
   return (
     <div className="App" style={{backgroundImage: `url(${imageUrl})` }}>
-      <MainPage /> =
+      <MainPage />
     </div>
   );
 }
