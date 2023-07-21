@@ -1,11 +1,11 @@
 import React from "react";
 
 const RecipeCard = ({ card, onClick }) => {
-  const truncatedName = card.name.length > 35 ? `${card.name.slice(0, 35)}...` : card.name;
-  const truncatedText = card.text.length > 145 ? `${card.text.slice(0, 145)}...` : card.text;
+  const truncatedName = card.title.length > 35 ? `${card.title.slice(0, 35)}...` : card.title;
+  const truncatedText = card.description.length > 145 ? `${card.description.slice(0, 145)}...` : card.description;
   return (
     <div
-      key={card.name}
+      key={card.title}
       style={{
         margin: "50px",
         padding: "0px",
@@ -60,7 +60,7 @@ const RecipeCard = ({ card, onClick }) => {
                 color:'rgb(187 187 187)'
               }}
             >
-                by <span style={{ color: "#e3e38f" }}>{card.author}</span>
+                by <span style={{ color: "#e3e38f" }}>{card.authors}</span>
             </p>
           </div>
         </div>

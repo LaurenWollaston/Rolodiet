@@ -12,14 +12,14 @@ const typeDefs = gql`
 
     type Recipe {
         recipeId: ID!
-        cusine: String!
+        cuisine: String!
         authors: [String]
         description: String!
-        ingredients: String!
+        ingredients: [String]
         title: String!
         image: String
         link: String
-    }
+      }
 
     type Auth {
         token: ID!
@@ -52,6 +52,7 @@ const typeDefs = gql`
     type Query {
         me: User
         user(_id: ID, name: String): User!
+        findAllRecipes: [Recipe!]!
     }
 
     type Mutation {
