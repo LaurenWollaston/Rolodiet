@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const { User } = require('../models');
 const signToken = require('../utils/auth');
 
@@ -8,6 +9,32 @@ const resolvers = {
             return User.findOne({
                 $or: [{ _id: id }, { username }],
             });
+        },
+
+        me: async (_, __, context) => {
+            if (context.user) {
+                return User.findById(context.user._id);
+            }
+            throw new Error('You are not logged in!')
+        },
+
+        // Resolver to fetch a list of recipes based on a search term
+        searchRecipes: async (_, { searchTerm }) => {
+            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${searchTerm}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`);
+            const data = await response.json();
+
+            // Map the data to adapt to our defined schema
+            return data.hits.map(({ recipe }) => ({
+                recipeId: recipe.uri,
+                cuisine: recipe.cuisineType,
+                authors: recipe.source,
+                description: recipe.label,
+                ingredients: recipe.ingredientLines,
+                instructions: recipe.instructions,
+                title: recipe.label,
+                image: recipe.image,
+                link: recipe.url
+            }));
         },
     },
     Mutation: {
