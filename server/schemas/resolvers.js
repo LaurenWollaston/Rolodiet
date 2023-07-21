@@ -4,7 +4,7 @@ const signToken = require('../utils/auth');
 const resolvers = {
     Query: {
         // Query single user by id or username
-        user: async (_, { _id, username }) => {
+        user: async (_, { id, username }) => {
             return User.findOne({
                 $or: [{ _id: id }, { username }],
             });

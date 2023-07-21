@@ -4,7 +4,7 @@ const { gql } = require('apollo-server-express');
 const typeDefs = gql`
     type User {
         _id: ID!
-        username: String!
+        name: String!
         email: String!
         recipeCount: Int
         savedRecipes: [Recipe]
@@ -51,7 +51,7 @@ const typeDefs = gql`
 
     type Query {
         me: User
-        user(_id: ID, username: String): User!
+        user(_id: ID, name: String): User!
     }
 
     type Mutation {
