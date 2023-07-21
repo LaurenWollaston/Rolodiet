@@ -9,10 +9,15 @@ const resolvers = {
                 $or: [{ _id: id }, { username }],
             });
         },
-        findAllRecipes: async () => {
+        findAllRecipes: async (_, { page, perPage }) => {
             try {
-              // Fetch all recipes from the database
-              const recipes = await Recipe.find();
+              const startIndex = (page - 1) * perPage;
+              const endIndex = startIndex + perPage;
+      
+              console.log('Fetching recipes from index:', startIndex, 'to', endIndex);
+        
+              const recipes = await Recipe.find().skip(startIndex).limit(perPage);
+        
               return recipes;
             } catch (error) {
               console.error('Error fetching recipes:', error);
