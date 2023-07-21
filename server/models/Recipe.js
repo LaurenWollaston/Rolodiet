@@ -19,10 +19,6 @@ const recipeSchema = new Schema({
         type: String,
         required: true,
     },
-    recipeId: {
-        type: String,
-        required: true,
-    },
     authors: [
         {
             type: String,
