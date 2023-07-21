@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import recipesData from "../recipes.json";
 import RecipeCard from "./recipeCard";
+import SearchComponent from "./SearchComponent";
 import Modal from "./modal";
 
 const MainPage = () => {
@@ -38,9 +39,14 @@ const MainPage = () => {
       shiftDisplayIndex2(5);
     }
   };
+  const handleSearch = (searchTerm) => {
+    // The code for searching goes here. I just have the searchbar itself done it's not hooked to for anything yet. 
+    console.log("Search Term:", searchTerm);
+  };
 
   return (
     <div style={{ display: "flex" }}>
+      <div style={{display:'flex',flexDirection:'column',width:'50%'}}>
       {/* The cards */}
 
       <div style={{ position: "absolute", zIndex: "0" }}>
@@ -70,13 +76,16 @@ const MainPage = () => {
         </button>
         <div style={{ marginBottom: "-15px" }}> </div>
       </div>
-
-      {/* The Modal */}
-      {selectedCard && (
-        <div style={{ zIndex: "3", marginLeft: "60vw", marginTop: "25vh" }}>
-          <Modal selectedCard={selectedCard} closeModal={closeModal} />
-        </div>
-      )}
+      </div>
+      <div style={{display:'flex',flexDirection:'column',width:'50%'}}>
+        <div style={{marginTop:'12vh'}}><SearchComponent onSearch={handleSearch} style={{display:'flex',flexDirection:'row'}} /></div>
+        {/* The Modal */}
+        {selectedCard && (
+          <div style={{ marginTop: "13vh",display:'flex',flexDirection:'row' }}>
+            <Modal selectedCard={selectedCard} closeModal={closeModal} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
