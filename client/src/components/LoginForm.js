@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useMutation } from '@apollo/client';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 import { LOGIN_USER } from "../utils/mutations";
@@ -14,8 +15,11 @@ const LoginForm = () => {
         setUserFormData({ ...userFormData, [name]: value });
     };
 
+    const [login, { error }] = useMutation(LOGIN_USER);
+    
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+        setValidated(true);
 
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -24,15 +28,13 @@ const LoginForm = () => {
         }
 
         try {
-            const response = await LOGIN_USER(userFormData);
+            const { data } = await login({
+                variables: { ...userFormData },
+            });
 
-            if (!response.ok) {
-                throw new Error('Something went wrong')
-            }
-
-            const { token, user } = await response.json();
-            console.log(user);
-            Auth.login(token)
+            const { token, user } = await data.login;
+            Auth.login(token);
+            
         } catch (error) {
             console.error(error);
             setShowAlert(true);
@@ -40,7 +42,6 @@ const LoginForm = () => {
 
         setUserFormData({
             username: '',
-            email: '',
             password: '',
         });
     };
@@ -66,19 +67,6 @@ const LoginForm = () => {
                 </Form.Group>
 
                 <Form.Group className='mb-3'>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='Your email'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email}
-                        required
-                    />
-                    <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group className='mb-3'>
                     <Form.Label htmlFor='password'>Password</Form.Label>
                     <Form.Control
                         type='text'
@@ -92,7 +80,7 @@ const LoginForm = () => {
                 </Form.Group>
 
                 <Button
-                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+                    disabled={!(userFormData.username && userFormData.password)}
                     type='submit'
                     variant='success'>
                     Submit
