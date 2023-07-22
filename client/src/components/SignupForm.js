@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
+import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
-    const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '', });
+    const [userFormData, setUserFormData] = useState({ username: '', password: '', });
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
@@ -14,8 +15,11 @@ const SignupForm = () => {
         setUserFormData({ ...userFormData, [name]: value });
     };
 
+    const [create, { error }] = useMutation(CREATE_USER);
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+        setValidated(true);
 
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
@@ -24,15 +28,13 @@ const SignupForm = () => {
         }
 
         try {
-            const response = await CREATE_USER(userFormData);
+            const { data } = await create({
+                variables: { ...userFormData },
+            });
 
-            if (!response.ok) {
-                throw new Error('Something went wrong creating user!');
-            }
-
-            const { token, user } = await response.json();
-            console.log(user);
+            const { token, user } = data.createUser;
             Auth.login(token);
+            
         } catch (error) {
             console.error(error);
             setShowAlert(true);
@@ -40,7 +42,6 @@ const SignupForm = () => {
 
         setUserFormData({
             username: '',
-            email: '',
             password: '',
         });
     };
@@ -66,22 +67,9 @@ const SignupForm = () => {
                 </Form.Group>
 
                 <Form.Group className='mb-3'>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='Your email'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email}
-                        required
-                    />
-                    <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group className='mb-3'>
                     <Form.Label htmlFor='password'>Password</Form.Label>
                     <Form.Control
-                        type='text'
+                        type='password'
                         placeholder='Your password'
                         name='password'
                         onChange={handleInputChange}
@@ -92,7 +80,7 @@ const SignupForm = () => {
                 </Form.Group>
 
                 <Button
-                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+                    disabled={!(userFormData.username && userFormData.password)}
                     type='submit'
                     variant='success'>
                     Submit
