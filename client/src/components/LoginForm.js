@@ -7,7 +7,7 @@ import Auth from './utils/auth';
 
 const LoginForm = () => {
     const [userFormData, setUserFormData] = useState({ username: '', password: '' });
-    const [validated] = useState(false);
+    const [validated, setValidated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
     const handleInputChange = (event) => {
@@ -15,7 +15,7 @@ const LoginForm = () => {
         setUserFormData({ ...userFormData, [name]: value });
     };
 
-    const [login, { error }] = useMutation(LOGIN_USER);
+    const [login] = useMutation(LOGIN_USER);
     
     const handleFormSubmit = async (event) => {
         event.preventDefault();
