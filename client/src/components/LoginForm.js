@@ -69,7 +69,7 @@ const LoginForm = () => {
                 <Form.Group className='mb-3'>
                     <Form.Label htmlFor='password'>Password</Form.Label>
                     <Form.Control
-                        type='text'
+                        type='password'
                         placeholder='Your password'
                         name='password'
                         onChange={handleInputChange}
