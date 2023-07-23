@@ -23,8 +23,6 @@ const resolvers = {
             const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${term}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`);
             const data = await response.json();
 
-            console.log(data);
-
             if (!data.hits || !Array.isArray(data.hits)) {
                 throw new Error ("No recipes found");
             }
