@@ -7,9 +7,9 @@ const expiration = '2h';
 module.exports = {
     // Authentication Middleware function
     authMiddleware: function ({ req }) {
-        let token = req.query.token || req.headers.authorization;
+        let token = req?.query?.token || req?.headers?.authorization;
 
-        if(req.headers.authorization) {
+        if(req?.headers?.authorization) {
             token = token.split(' ').pop().trim();
         }
 
@@ -24,6 +24,8 @@ module.exports = {
         } catch (error) {
             console.error('Invalid Token');
         }
+
+        return req;
     },
     signToken: function ({ username, email, _id }) {
         const payload = { username, email, _id };
