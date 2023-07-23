@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/good-eats');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://mbhimjeea:4PAMEfMfgmrIBUgD@recipe-search.gkpzti5.mongodb.net/?retryWrites=true&w=majority', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
 
 module.exports = mongoose.connection;
