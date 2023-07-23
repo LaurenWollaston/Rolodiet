@@ -72,7 +72,7 @@ const resolvers = {
 
         // Save recipe to user's 'savedRecipes' field by adding it to the set (preventing duplicates)
         saveRecipe: async (_, { userId, recipe }) => {
-            const updatedUser = await user.fineOneAndUpdate(
+            const updatedUser = await User.fineOneAndUpdate(
                 { _id: userId },
                 { $addToSet: { savedRecipes: recipe } },
                 { new: true, runValidators: true}
