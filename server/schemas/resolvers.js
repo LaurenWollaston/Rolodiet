@@ -32,6 +32,7 @@ const resolvers = {
             return data.hits.map(({ recipe }) => ({
                 recipe: {
                     uri: recipe.uri,
+                    cuisineType: recipe.cuisineType,
                     dietLabels: recipe.dietLabels,
                     healthLabels: recipe.healthLabels,
                     ingredientLines: recipe.ingredientLines,
