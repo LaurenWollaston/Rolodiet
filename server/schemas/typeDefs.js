@@ -26,17 +26,8 @@ const typeDefs = gql`
     healthLabels: [String]
     ingredientLines: [String]!
     calories: Float!
-    ingredients: [Ingredient]!
     image: String
     url: String
-  }
-
-  type Ingredient {
-    text: String
-    quantity: Float
-    measure: String
-    food: String
-    weight: Float
   }
 
   type Auth {
@@ -56,14 +47,6 @@ const typeDefs = gql`
     password: String!
   }
 
-  input IngredientInput {
-    text: String
-    quantity: Float
-    measure: String
-    food: String
-    weight: Float
-}
-
   input SaveRecipeInput {
     recipeId: String!
     uri: String!
@@ -72,7 +55,6 @@ const typeDefs = gql`
     healthLabels: [String]
     ingredientLines: [String]!
     calories: Float!
-    ingredients: [IngredientInput]!
     image: String
     url: String
   }
