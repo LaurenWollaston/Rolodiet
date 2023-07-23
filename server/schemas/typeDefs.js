@@ -21,7 +21,7 @@ const typeDefs = gql`
 
   type Recipe {
     uri: String!
-    cuisineType: String
+    cuisineType: [String]
     dietLabels: [String]
     healthLabels: [String]
     ingredientLines: [String]!
@@ -50,7 +50,7 @@ const typeDefs = gql`
   input SaveRecipeInput {
     recipeId: String!
     uri: String!
-    cuisineType: String
+    cuisineType: [String]
     dietLabels: [String]
     healthLabels: [String]
     ingredientLines: [String]!
