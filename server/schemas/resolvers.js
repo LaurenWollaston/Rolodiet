@@ -19,21 +19,29 @@ const resolvers = {
         },
 
         // Resolver to fetch a list of recipes based on a search term
-        searchRecipes: async (_, { searchTerm }) => {
-            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${searchTerm}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`);
+        recipes: async (_, { term }) => {
+            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${term}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`);
             const data = await response.json();
 
             // Map the data to adapt to our defined schema
             return data.hits.map(({ recipe }) => ({
-                recipeId: recipe.uri,
-                cuisine: recipe.cuisineType,
-                authors: recipe.source,
-                description: recipe.label,
-                ingredients: recipe.ingredientLines,
-                instructions: recipe.instructions,
-                title: recipe.label,
-                image: recipe.image,
-                link: recipe.url
+                recipe: {
+                    uri: recipe.uri,
+                    cusineType: recipe.cuisineType,
+                    dietLabels: recipe.dietLabels,
+                    healthLabels: recipe.healthLabels,
+                    ingredientLines: recipe.ingredientLines,
+                    calories: recipe.calories,
+                    ingredients: recipe.ingredients.map(ingredient => ({
+                        text: ingredient.text,
+                        quantity: ingredient.quantity,
+                        measure: ingredient.measure,
+                        food: ingredient.food,
+                        weight: ingredient.weight
+                    })),
+                    image: recipe.image,
+                    url: recipe.url
+                }
             }));
         },
     },
@@ -42,7 +50,7 @@ const resolvers = {
         createUser: async (_, { input }) => {
             const user = await User.create({ ...input, savedRecipes: [] });
 
-            if(!user) {
+            if (!user) {
                 throw new Error('Something went wrong!');
             }
 
@@ -55,16 +63,16 @@ const resolvers = {
         login: async (_, { input }) => {
             const user = await User.findOne({ $or: [{ username: input.username }, { email: input.email }] });
 
-            if(!user) {
+            if (!user) {
                 throw new Error('Incorrect username or password');
             }
 
             const correctPassword = await user.isCorrectPassword(input.password);
 
-            if(!correctPassword) {
+            if (!correctPassword) {
                 throw new Error('Incorrect username or password')
             }
-            
+
             const token = signToken(user);
 
             return { token, user };
@@ -72,32 +80,32 @@ const resolvers = {
 
         // Save recipe to user's 'savedRecipes' field by adding it to the set (preventing duplicates)
         saveRecipe: async (_, { userId, recipe }) => {
-            const updatedUser = await User.fineOneAndUpdate(
+            const updatedUser = await User.findOneAndUpdate(
                 { _id: userId },
                 { $addToSet: { savedRecipes: recipe } },
-                { new: true, runValidators: true}
+                { new: true, runValidators: true }
             );
 
-            if(!updatedUser) {
+            if (!updatedUser) {
                 throw new Error('Could not save recipe!');
             }
 
-            return { updatedUser };
+            return updatedUser;
         },
 
         // Remove recipe from user's 'savedRecipes' field by removing it from the set
         removeRecipe: async (_, { userId, recipeId }) => {
-            const updatedUser = await User.fineOneAndUpdate(
+            const updatedUser = await User.findOneAndUpdate(
                 { _id: userId },
-                { $pull: {savedRecipes: { recipeId } } },
+                { $pull: { savedRecipes: { recipeId: recipeId } } },
                 { new: true }
             );
 
-            if(!updatedUser) {
+            if (!updatedUser) {
                 throw new Error('Could not remove recipe!');
             }
 
-            return { updatedUser };
+            return updatedUser;
         },
     },
 };

@@ -2,6 +2,11 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+  type Query {
+    me: User
+    user(_id: ID, username: String): User!
+    recipes(term: String!): [Hit!]!
+}
   type User {
     _id: ID!
     name: String!
@@ -10,17 +15,29 @@ const typeDefs = gql`
     savedRecipes: [Recipe]
   }
 
-    type Recipe {
-        recipeId: ID!
-        cusine: [String]!
-        authors: String
-        description: String!
-        ingredients: [String]!
-        instructions: [String]!
-        title: String!
-        image: String
-        link: String
-    }
+  type Hit {
+    recipe: Recipe
+  }
+
+  type Recipe {
+    uri: String!
+    cuisineType: [String]!
+    dietLabels: [String]
+    healthLabels: [String]
+    ingredientLines: [String]!
+    calories: Float!
+    ingredients: [Ingredient]!
+    image: String
+    url: String
+  }
+
+  type Ingredient {
+    text: String
+    quantity: Float
+    measure: String
+    food: String
+    weight: Float
+  }
 
   type Auth {
     token: ID!
@@ -39,23 +56,19 @@ const typeDefs = gql`
     password: String!
   }
 
-    input SaveRecipeInput {
-        recipeId: String!
-        authors: String
-        cusine: [String]!
-        description: String!
-        ingredients: [String]!
-        instructions: [String]!
-        title: String!
-        image: String
-        link: String
-    }
+  input SaveRecipeInput {
+    recipeId: String!
+    uri: String!
+    cuisineType: [String]!
+    dietLabels: [String]
+    healthLabels: [String]
+    ingredientLines: [String]!
+    calories: Float!
+    ingredients: [Ingredient]!
+    image: String
+    url: String
+  }
 
-    type Query {
-        me: User
-        user(_id: ID, username: String): User!
-        searchRecipes(searchTerm: String!): [Recipe]
-    }
 
   type Mutation {
     login(input: LoginInput!): Auth
