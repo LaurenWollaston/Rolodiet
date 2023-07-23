@@ -20,7 +20,7 @@ const resolvers = {
 
         // Resolver to fetch a list of recipes based on a search term
         recipes: async (_, { term }) => {
-            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${term}&app_id=3b1478fa&app_key=44f5e6b781f409d95f7bcbf09711a809`);
+            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${term}&app_id=******&app_key=*******`);
             const data = await response.json();
 
             console.log(data);
