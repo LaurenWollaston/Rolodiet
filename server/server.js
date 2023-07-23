@@ -21,7 +21,7 @@ const server = new ApolloServer({
     debug: true,
     context: ({ req }) => {
         console.log(`Received request with headers: ${JSON.stringify(req.headers)}`);
-        const context = { user: authMiddleware(req).user };
+        const context = { user: req.user };
         console.log(`Generated context: ${JSON.stringify(context)}`);
         return context;
     }

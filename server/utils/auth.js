@@ -7,6 +7,11 @@ const expiration = '2h';
 module.exports = {
     // Authentication Middleware function
     authMiddleware: function ({ req }) {
+
+        if (!req) {
+            return {};
+        }
+
         let token = req?.query?.token || req?.headers?.authorization;
 
         if(req?.headers?.authorization) {
