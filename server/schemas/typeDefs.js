@@ -12,7 +12,7 @@ const typeDefs = gql`
 
     type Recipe {
         recipeId: ID!
-        cusine: String!
+        cuisine: String!
         authors: [String]
         description: String!
         ingredients: String!
