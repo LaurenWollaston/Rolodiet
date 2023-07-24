@@ -16,9 +16,29 @@
 
 .nav-link {
     color: #f8f9fa !important; /* Light color text */
-    margin-right: 0.5rem; /* Right margin */
+    margin-right: 1rem; /* Right margin */
 }
 
 .nav-link:hover {
     color: #adb5bd !important; /* Light gray text on hover */
+}
+
+/* Login and Register buttons */
+
+.login-button,
+.register-button {
+    background-color: #97902e !important; /* Purple color */
+    color: #f8f9fa !important; /* Light color text */
+    border-radius: 5px; /* Rounded corners */
+    padding: 0.5em 1em; /* Padding */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+.login-button:hover,
+.register-button:hover {
+    background-color: #757129 !important; /* Darken purple color on hover */
+}
+
+.register-button {
+    margin-left: 0.5rem; /* Space between login and register button */
 }
