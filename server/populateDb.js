@@ -8,7 +8,7 @@ const jsonFilePath = './recipes.json';
 const populateDatabase = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect('mongodb://localhost:27017/good-eats', {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/good-eats', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

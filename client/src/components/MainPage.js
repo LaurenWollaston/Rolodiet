@@ -17,8 +17,6 @@ const RECIPES_QUERY = gql`
 const AUTOCOMPLETE_RECIPES_QUERY = gql`
   query SearchRecipes($page: Int, $perPage: Int, $searchTerm: String) {
     searchRecipes(page: $page, perPage: $perPage, searchTerm: $searchTerm) {
-      ingredients
-      description
       authors
       title
     }

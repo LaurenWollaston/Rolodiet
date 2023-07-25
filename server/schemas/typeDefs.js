@@ -53,6 +53,7 @@ const typeDefs = gql`
     me: User
     user(_id: ID, name: String): User!
     findAllRecipes(page: Int, perPage: Int): [Recipe!]!
+    autocompleteRecipes(searchTerm: String): [Recipe!]!
   }
 
   type Mutation {

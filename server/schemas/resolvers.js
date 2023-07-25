@@ -28,15 +28,16 @@ const resolvers = {
             try {
               // Find matches in database for submission
               const recipes = await Recipe.find({
-                title: { $regex: searchTerm, $options: "i" },
+                title: { $regex: new RegExp(`^${searchTerm}`, "i") },
               }).limit(5); // Limit 5 results so we can reuse the print to cards thing.
-      
+          
               return recipes;
             } catch (error) {
               console.error("Error fetching autocomplete recipes:", error);
               throw new Error("Failed to fetch autocomplete recipes.");
             }
           },
+          
     },
     Mutation: {
         // Create new user with signed webtoken and send to client
