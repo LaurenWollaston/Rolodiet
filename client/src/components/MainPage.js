@@ -58,7 +58,16 @@ const MainPage = () => {
   }, [isEmptySearch]);
 
   const shiftDisplay = (direction) => {
-    const nextPage = direction === "next" ? page + 1 : page - 1;
+    let nextPage;
+
+  if (direction === "next") {
+    nextPage = page + 1;
+  } else if (direction === "prev") {
+    // Ensure that the minimum value for page is 1
+    nextPage = Math.max(page - 1, 1);
+  } else {
+    return; // Do nothing if an invalid direction is provided
+  }
     setPage(nextPage);
 
     fetchMore({
