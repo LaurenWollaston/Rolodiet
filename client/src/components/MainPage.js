@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./recipeCard";
 import SearchComponent from "./SearchComponent";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useApolloClient  } from "@apollo/client";
 import Modal from "./modal";
 
 const RECIPES_QUERY = gql`
@@ -26,6 +26,7 @@ const MainPage = () => {
   const perPage = 5; // Number of recipes per page
   const [page, setPage] = useState(1); // Current page number
   const [searchParams, setSearchParams] = useState(""); // Add state for searchParams
+  const client = useApolloClient();
 
   const { loading, error, data, fetchMore } = useQuery(RECIPES_QUERY, {
     variables: { page, perPage },
@@ -74,9 +75,27 @@ const MainPage = () => {
     setSearchParams(searchTerm);
   };
 
-  const handleAutocompleteItemClick = (title) => {
+  const handleAutocompleteItemClick = async (title) => {
     const selectedCard = cards.find((card) => card.title === title);
-    setSelectedCard(selectedCard);
+  
+    if (selectedCard) {
+      setSelectedCard(selectedCard);
+    } else {
+      try {
+        const { data } = await client.query({
+          query: RECIPES_QUERY,
+          variables: { page: 1, perPage: 1000 }, // Set perPage to a large number to fetch all recipes
+        });
+  
+        const fullData = data?.findAllRecipes.find((card) => card.title === title);
+  
+        if (fullData) {
+          setSelectedCard(fullData);
+        }
+      } catch (error) {
+        console.error("Error fetching full recipe data:", error);
+      }
+    }
   };
 
   return (

@@ -74,10 +74,10 @@ const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
       {/* Display autocomplete suggestions */}
       {loading && <p>Loading...</p>}
       {data && data.autocompleteRecipes && data.autocompleteRecipes.length > 0 && (
-        <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex'}}>
-          <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',}}>
+        <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex',}}>
+          <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',display:'flex', flexDirection:'column'}}>
             {data.autocompleteRecipes.map((recipe) => (
-              <li style={{margin:'.4vh', backgroundColor:'black',padding:'.5vh'}} key={recipe.recipeId} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
+              <li style={{margin:'.4vh', backgroundColor:'black',padding:'.5vh'}} key={recipe._id} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
             ))}
           </ul>
         </div>
