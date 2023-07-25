@@ -5,12 +5,11 @@ import searchIcon from "../images/search.svg";
 const size = "10px";
 
 const AUTOCOMPLETE_RECIPES_QUERY = gql`
-  query AutocompleteRecipes($searchTerm: String!) {
-    autocompleteRecipes(searchTerm: $searchTerm) {
-      title
-      recipeId
-    }
+query Autocomplete($searchTerm: String) {
+  autocompleteRecipes(searchTerm: $searchTerm) {
+    title
   }
+}
 `;
 
 const SearchComponent = ({ onSearch }) => {
@@ -19,9 +18,6 @@ const SearchComponent = ({ onSearch }) => {
     AUTOCOMPLETE_RECIPES_QUERY
   );
 
-  console.log("searchTerm:", searchTerm);
-  console.log("loading:", loading);
-  console.log("data:", data);
   const handleChange = (event) => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
