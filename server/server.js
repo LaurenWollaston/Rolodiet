@@ -1,7 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
-const { authMiddleware } = require('./utils/auth');
+const { authMiddleware, getUserFromToken } = require('./utils/auth');
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -17,15 +17,13 @@ const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
     typeDefs,
     resolvers,
-    // Enabling introspection to allow Apollo Studio to query and fetch details about the GQL schema during development; introspection should be disabled on production build!
+    // Enabled introspection to allow Apollo Studio to query and fetch details of GQL schema; disable during production build!
     introspection: true,
-    context: authMiddleware,
-    // context: ({ req }) => {
-    //     const context = authMiddleware(req);
-    //     return {
-    //         user: context ? context.user : null
-    //     };
-    // }
+    context: ({ req }) => {
+        const token = req.headers.authorization || '';
+        const user = getUserFromToken(token);
+        return { user };
+    }
 });
 
 
