@@ -74,6 +74,11 @@ const MainPage = () => {
     setSearchParams(searchTerm);
   };
 
+  const handleAutocompleteItemClick = (title) => {
+    const selectedCard = cards.find((card) => card.title === title);
+    setSelectedCard(selectedCard);
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
@@ -130,7 +135,7 @@ const MainPage = () => {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
         <div style={{ marginTop: '12vh' }}>
-          <SearchComponent onSearch={handleSearch} style={{ display: 'flex', flexDirection: 'row' }} />
+          <SearchComponent onSearch={handleSearch} onAutocompleteItemClick={handleAutocompleteItemClick} style={{ display: 'flex', flexDirection: 'row' }} />
         </div>
         {/* The Modal */}
         {selectedCard && (

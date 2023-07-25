@@ -12,7 +12,7 @@ query Autocomplete($searchTerm: String) {
 }
 `;
 
-const SearchComponent = ({ onSearch }) => {
+const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [getAutocompleteRecipes, { loading, data }] = useLazyQuery(
     AUTOCOMPLETE_RECIPES_QUERY
@@ -30,6 +30,10 @@ const SearchComponent = ({ onSearch }) => {
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
     onSearch(searchTerm);
+  };
+
+  const handleAutocompleteItemClick = (title) => {
+    onAutocompleteItemClick(title);
   };
 
   return (
@@ -70,11 +74,10 @@ const SearchComponent = ({ onSearch }) => {
       {/* Display autocomplete suggestions */}
       {loading && <p>Loading...</p>}
       {data && data.autocompleteRecipes && data.autocompleteRecipes.length > 0 && (
-        <div>
-          <p>Autocomplete Suggestions:</p>
-          <ul>
+        <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex'}}>
+          <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',}}>
             {data.autocompleteRecipes.map((recipe) => (
-              <li key={recipe.recipeId}>{recipe.title}</li>
+              <li style={{margin:'.4vh', backgroundColor:'black',padding:'.5vh'}} key={recipe.recipeId} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
             ))}
           </ul>
         </div>
