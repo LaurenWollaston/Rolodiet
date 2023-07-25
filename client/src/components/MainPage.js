@@ -18,6 +18,9 @@ const AUTOCOMPLETE_RECIPES_QUERY = gql`
 query Autocomplete($searchTerm: String) {
   autocompleteRecipes(searchTerm: $searchTerm) {
     title
+    description
+    authors
+    ingredients
   }
 }
 `;
@@ -70,9 +73,20 @@ const MainPage = () => {
     setSelectedCard(null);
   };
 
-  const handleSearch = (searchTerm) => {
-    // Update the state for searchParams
-    setSearchParams(searchTerm);
+  const handleSearch = async (searchTerm) => {
+    try {
+      const { data } = await client.query({
+        query: AUTOCOMPLETE_RECIPES_QUERY,
+        variables: { searchTerm },
+      });
+  
+      // Update the cards state with the search results
+      await setCards(data?.autocompleteRecipes || []);
+      console.log(cards);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      // Handle the error if necessary
+    }
   };
 
   const handleAutocompleteItemClick = async (title) => {

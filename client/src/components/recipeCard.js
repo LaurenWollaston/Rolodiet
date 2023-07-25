@@ -1,6 +1,7 @@
 import React from "react";
 
 const RecipeCard = ({ card, onClick }) => {
+  const uniqueKey = card._id;
   const truncatedName = card.title.length > 35 ? `${card.title.slice(0, 35)}...` : card.title;
   const truncatedText = card.description.length > 145 ? `${card.description.slice(0, 145)}...` : card.description;
   return (
