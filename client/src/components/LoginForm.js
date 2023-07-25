@@ -25,17 +25,17 @@ const LoginForm = () => {
 
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-            event.preventDefault();
             event.stopPropagation();
+            return;
         }
 
         try {
             const { data } = await login({
-                variables: { email: userFormData.email, password: userFormData.password },
+                variables: { input: userFormData },
             });
 
-            const { token} = data.login;
-            AuthService.login(token);
+            
+            AuthService.login(data.login.token);
             
         } catch (error) {
             console.error(error);
