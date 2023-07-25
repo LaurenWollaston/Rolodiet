@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RecipeCard from "./recipeCard";
 import SearchComponent from "./SearchComponent";
-import { useQuery, gql, useApolloClient  } from "@apollo/client";
+import { useQuery, gql, useApolloClient } from "@apollo/client";
 import Modal from "./modal";
 
 const RECIPES_QUERY = gql`
@@ -15,20 +15,20 @@ const RECIPES_QUERY = gql`
   }
 `;
 const AUTOCOMPLETE_RECIPES_QUERY = gql`
-query Autocomplete($searchTerm: String) {
-  autocompleteRecipes(searchTerm: $searchTerm) {
-    title
-    description
-    authors
-    ingredients
+  query Autocomplete($searchTerm: String) {
+    autocompleteRecipes(searchTerm: $searchTerm) {
+      title
+      description
+      authors
+      ingredients
+    }
   }
-}
 `;
 
 const MainPage = () => {
   const perPage = 5; // Number of recipes per page
   const [page, setPage] = useState(1); // Current page number
-  const [searchParams, setSearchParams] = useState(""); // Add state for searchParams
+  const [searchParams, setSearchParams] = useState(""); // Add state for searchParams (the string the user is searching for)
   const client = useApolloClient();
 
   const { loading, error, data, fetchMore } = useQuery(RECIPES_QUERY, {
@@ -37,12 +37,25 @@ const MainPage = () => {
 
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [isEmptySearch, setIsEmptySearch] = useState(false); // track empty search
 
   useEffect(() => {
     if (!loading && !error) {
       setCards(data?.findAllRecipes || []);
     }
   }, [data, loading, error]);
+
+  useEffect(() => {
+    if (isEmptySearch) {
+      // Set a timeout to remove the message after 5 seconds
+      const timeoutId = setTimeout(() => {
+        setIsEmptySearch(false);
+      }, 5000);
+
+      // Clear the timeout if the component is unmounted before 5 seconds
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isEmptySearch]);
 
   const shiftDisplay = (direction) => {
     const nextPage = direction === "next" ? page + 1 : page - 1;
@@ -79,10 +92,15 @@ const MainPage = () => {
         query: AUTOCOMPLETE_RECIPES_QUERY,
         variables: { searchTerm },
       });
-  
-      // Update the cards state with the search results
-      await setCards(data?.autocompleteRecipes || []);
-      console.log(cards);
+
+      if (data?.autocompleteRecipes?.length === 0) {
+        // If no results found, set the state to true to display the message
+        setIsEmptySearch(true);
+      } else {
+        // Update the cards state with the search results
+        setCards(data?.autocompleteRecipes || []);
+        setIsEmptySearch(false); // Reset the state as search results are found
+      }
     } catch (error) {
       console.error("Error fetching search results:", error);
       // Handle the error if necessary
@@ -91,7 +109,7 @@ const MainPage = () => {
 
   const handleAutocompleteItemClick = async (title) => {
     const selectedCard = cards.find((card) => card.title === title);
-  
+
     if (selectedCard) {
       setSelectedCard(selectedCard);
     } else {
@@ -100,9 +118,11 @@ const MainPage = () => {
           query: RECIPES_QUERY,
           variables: { page: 1, perPage: 1000 }, // Set perPage to a large number to fetch all recipes
         });
-  
-        const fullData = data?.findAllRecipes.find((card) => card.title === title);
-  
+
+        const fullData = data?.findAllRecipes.find(
+          (card) => card.title === title
+        );
+
         if (fullData) {
           setSelectedCard(fullData);
         }
@@ -114,7 +134,7 @@ const MainPage = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
+      <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
         {/* The cards */}
         <div style={{ position: "absolute", zIndex: "0" }}>
           {cards.slice(0, perPage).map((card) => (
@@ -124,8 +144,28 @@ const MainPage = () => {
               onClick={() => handleCardClick(card)}
             />
           ))}
-          {cards.length === 0 && <p>No recipes found.</p>}
-          <div style={{ marginBottom: '3vh', marginTop: '-2vh' }}>
+          {isEmptySearch && (
+            <h1
+              id="noResultsMessage"
+              style={{
+                color: "red",
+                position: "absolute",
+                left: "50%",
+                right: "-50%",
+                top: "20%",
+                bottom: "-50%",
+                backgroundColor: "#000000e0",
+                overflow: "hidden",
+                marginBottom: "135vh",
+                marginLeft: "25%",
+                marginRight: "25%",
+                paddingTop: "2.3vh",
+              }}
+            >
+              No results found.
+            </h1>
+          )}
+          <div style={{ marginBottom: "3vh", marginTop: "-2vh" }}>
             <button
               onClick={() => shiftDisplay("prev")}
               style={{
@@ -138,7 +178,6 @@ const MainPage = () => {
                 border: "none",
                 backgroundColor: "rgb(0 0 0 / 67%)",
                 marginTop: "-19px",
-                // marginRight: "-19px",
               }}
             >
               ←
@@ -156,23 +195,28 @@ const MainPage = () => {
                   border: "none",
                   backgroundColor: "rgb(0 0 0 / 67%)",
                   marginTop: "-19px",
-                  // marginRight: "-19px",
                 }}
               >
                 →
               </button>
             )}
           </div>
-          <div style={{ marginBottom: "-15px" }}> </div>
+          <div style={{ marginBottom: "-15px" }}></div>
         </div>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-        <div style={{ marginTop: '12vh' }}>
-          <SearchComponent onSearch={handleSearch} onAutocompleteItemClick={handleAutocompleteItemClick} style={{ display: 'flex', flexDirection: 'row' }} />
+      <div style={{ display: "flex", flexDirection: "column", width: "50%" }}>
+        <div style={{ marginTop: "12vh" }}>
+          <SearchComponent
+            onSearch={handleSearch}
+            onAutocompleteItemClick={handleAutocompleteItemClick}
+            style={{ display: "flex", flexDirection: "row" }}
+          />
         </div>
         {/* The Modal */}
         {selectedCard && (
-          <div style={{ marginTop: "13vh", display: 'flex', flexDirection: 'row' }}>
+          <div
+            style={{ marginTop: "13vh", display: "flex", flexDirection: "row" }}
+          >
             <Modal selectedCard={selectedCard} closeModal={closeModal} />
           </div>
         )}

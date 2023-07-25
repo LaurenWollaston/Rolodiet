@@ -73,7 +73,7 @@ const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
       </form>
       {/* Display autocomplete suggestions */}
       {loading && <p>Loading...</p>}
-      {data && data.autocompleteRecipes && data.autocompleteRecipes.length > 0 && (
+      {data && data.autocompleteRecipes && data.autocompleteRecipes.length > 0 && searchTerm !== "" && (
         <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex',}}>
           <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',display:'flex', flexDirection:'column'}}>
             {data.autocompleteRecipes.map((recipe) => (
