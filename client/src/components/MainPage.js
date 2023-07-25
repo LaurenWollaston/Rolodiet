@@ -139,7 +139,7 @@ const MainPage = () => {
         <div style={{ position: "absolute", zIndex: "0" }}>
           {cards.slice(0, perPage).map((card) => (
             <RecipeCard
-              key={card.recipeId}
+              key={card._id}
               card={card}
               onClick={() => handleCardClick(card)}
             />

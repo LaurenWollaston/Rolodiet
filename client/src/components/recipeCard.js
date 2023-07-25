@@ -1,12 +1,10 @@
 import React from "react";
 
 const RecipeCard = ({ card, onClick }) => {
-  const uniqueKey = card._id;
   const truncatedName = card.title.length > 35 ? `${card.title.slice(0, 35)}...` : card.title;
   const truncatedText = card.description.length > 145 ? `${card.description.slice(0, 145)}...` : card.description;
   return (
     <div
-      key={card.title}
       style={{
         margin: "50px",
         padding: "0px",
@@ -16,6 +14,7 @@ const RecipeCard = ({ card, onClick }) => {
         backgroundColor: "rgba(33, 33, 33, 0.78)",
         width: "40vw",
       }}
+      class="recipeCard"
       onClick={onClick}
     >
       <div
@@ -46,10 +45,12 @@ const RecipeCard = ({ card, onClick }) => {
                 whiteSpace: "nowrap",
                 overflow: "hidden",
               }}
+              class="cardTitle"
             >
               {truncatedName}
             </h2>
             <p
+              class="recipeierInfo"
               style={{
                 display: "flex",
                 flexDirection: "row",

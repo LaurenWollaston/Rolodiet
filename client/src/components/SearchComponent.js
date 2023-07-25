@@ -8,6 +8,7 @@ const AUTOCOMPLETE_RECIPES_QUERY = gql`
 query Autocomplete($searchTerm: String) {
   autocompleteRecipes(searchTerm: $searchTerm) {
     title
+    _id
   }
 }
 `;
@@ -77,7 +78,7 @@ const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
         <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex',}}>
           <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',display:'flex', flexDirection:'column'}}>
             {data.autocompleteRecipes.map((recipe) => (
-              <li style={{margin:'.4vh', backgroundColor:'#000000b8',padding:'.5vh'}} key={recipe._id} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
+              <li style={{margin:'.4vh', backgroundColor:'#000000b8',padding:'.5vh'}} class="autocompleteTab" key={`${recipe._id}${recipe.title}`} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
             ))}
           </ul>
         </div>
