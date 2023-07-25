@@ -18,8 +18,10 @@ const SearchComponent = ({ onSearch }) => {
   const [getAutocompleteRecipes, { loading, data }] = useLazyQuery(
     AUTOCOMPLETE_RECIPES_QUERY
   );
-  
 
+  console.log("searchTerm:", searchTerm);
+  console.log("loading:", loading);
+  console.log("data:", data);
   const handleChange = (event) => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
