@@ -66,3 +66,27 @@ html, body {
       justify-content: center;
   }
 }
+
+@media screen and (max-width: 600px) {
+  .autocompleteTab {
+    width: 30vw;
+    align-self: center;
+  }
+  .recipeCard{
+    max-width: 55vw;
+    max-height: 30vh;
+    margin-left: 2vw !important;
+    overflow: hidden;
+  }
+  .cardTitle{
+    margin-top:2vh !important;
+    margin-left: -3vw;
+    font-size: 20px !important;
+    word-wrap: normal;
+    -ms-word-wrap: normal;
+    overflow: auto !important;
+  }
+  .recipeierInfo{
+    opacity: 0;
+  }
+}

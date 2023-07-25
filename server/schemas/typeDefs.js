@@ -11,7 +11,7 @@ const typeDefs = gql`
   }
 
   type Recipe {
-    recipeId: ID!
+    _id: ID!
     cuisine: String!
     authors: [String]
     description: String!
@@ -53,6 +53,7 @@ const typeDefs = gql`
     me: User
     user(_id: ID, name: String): User!
     findAllRecipes(page: Int, perPage: Int): [Recipe!]!
+    autocompleteRecipes(searchTerm: String): [Recipe!]!
   }
 
   type Mutation {

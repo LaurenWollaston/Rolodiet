@@ -1,11 +1,21 @@
 /* Navbar.css */
+a {
+    text-decoration: none;
+}
 
 .custom-navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #343a40; /* Dark gray */
+    background-color: #000000eb; /* Dark gray */
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); /* Shadow effect */
     padding: 0.5rem 1rem; /* Vertical and horizontal padding */
+    padding-bottom: -2vh;
+    max-height: 8.4vh;
+    max-width: 100%;
+    overflow: hidden;
+}
+.navbar-nav{
+    margin-top: 3vh;
 }
 
 .navbar-brand {
@@ -41,4 +51,27 @@
 
 .register-button {
     margin-left: 0.5rem; /* Space between login and register button */
+}
+
+@media screen and (max-width: 600px) {
+    .custom-navbar {
+      padding:0;
+      max-height: 25vh;
+    }
+    h2{
+        margin:0;
+        margin-top: 10%;
+    }
+    .navbar-nav{
+        margin:0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: 600;
+    }
+    .register-button,
+    .login-button{
+        background-color: #ffffff00 !important;
+        padding: 0;
+    }
 }
