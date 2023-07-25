@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink, concat } from '@apollo/client';
+import { setContext } 
 
 // Replace this with your GraphQL server endpoint
 const GRAPHQL_ENDPOINT = 'http://localhost:3001/graphql';

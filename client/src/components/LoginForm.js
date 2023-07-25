@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useMutation } from '@apollo/client';
 import { Form, Button, Alert } from 'react-bootstrap';
-
-import { LOGIN_USER } from "../utils/mutations";
-import Auth from '../utils/auth';
 import './LoginForm.css'; // Import the CSS file
 
+import { LOGIN_USER } from "../utils/mutations";
+import AuthService from '../utils/auth';
+
+
 const LoginForm = () => {
-    const [userFormData, setUserFormData] = useState({ username: '', password: '' });
+    const [userFormData, setUserFormData] = useState({ email: '', password: '' });
     const [validated, setValidated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
@@ -30,11 +31,11 @@ const LoginForm = () => {
 
         try {
             const { data } = await login({
-                variables: { ...userFormData },
+                variables: { email: userFormData.email, password: userFormData.password },
             });
 
-            const { token, user } = data.login;
-            Auth.login(token);
+            const { token} = data.login;
+            AuthService.login(token);
             
         } catch (error) {
             console.error(error);
@@ -42,7 +43,7 @@ const LoginForm = () => {
         }
 
         setUserFormData({
-            username: '',
+            email: '',
             password: '',
         });
     };
@@ -55,17 +56,17 @@ const LoginForm = () => {
                 </Alert>
 
                 <Form.Group className='mb-3 loginFormInputGroup'>
-                    <Form.Label htmlFor='username' className='loginFormLabel'>Username</Form.Label>
+                    <Form.Label htmlFor='email' className='loginFormLabel'>Email</Form.Label>
                     <Form.Control
                         type='text'
-                        placeholder='Your username'
-                        name='username'
+                        placeholder='Your email'
+                        name='email'
                         onChange={handleInputChange}
-                        value={userFormData.username}
+                        value={userFormData.email}
                         required
                         className='loginFormControl'
                         />
-                    <Form.Control.Feedback type='invalid' className='loginFormInvalidFeedback'>Username is required!</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid' className='loginFormInvalidFeedback'>Email is required!</Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className='mb-3 loginFormInputGroup'>
