@@ -3,12 +3,22 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
     Query: {
-        // Query single user by id or username
+        // Fetch single user by id or username
         user: async (_, { id, username }) => {
             return User.findOne({
                 $or: [{ _id: id }, { username }],
             });
         },
+
+        // Fetch logged-in user's data
+        me: async (_, __, context ) => {
+            if (!context.user) {
+                throw new Error('Not authenticated')
+            }
+            // Find user in database if context.user is defined
+            return await User.findOne({ _id: context.user._id });
+        },
+
         findAllRecipes: async (_, { page, perPage }) => {
             try {
                 const startIndex = (page - 1) * perPage;
@@ -42,6 +52,7 @@ const resolvers = {
     Mutation: {
         // Create new user with signed webtoken and send to client
         createUser: async (_, { input }) => {
+            // Check if user data exists before creating user with input username and email
             const user = await User.findOne({ $of: [{ username: input.username }, { email: input.email }] });
 
             if (user) {
@@ -76,7 +87,7 @@ const resolvers = {
 
         // Save recipe to user's 'savedRecipes' field by adding it to the set (preventing duplicates)
         saveRecipe: async (_, { userId, recipe }) => {
-            const updatedUser = await user.findOneAndUpdate(
+            const updatedUser = await User.findOneAndUpdate(
                 { _id: userId },
                 { $addToSet: { savedRecipes: recipe } },
                 { new: true, runValidators: true }
@@ -86,7 +97,7 @@ const resolvers = {
                 throw new Error('Could not save recipe!');
             }
 
-            // Schema expecting User object as per schema defined in typeDefs
+            // Schema expecting User object as per mutation defined in typeDefs
             return updatedUser;
         },
 
@@ -101,7 +112,7 @@ const resolvers = {
             if (!updatedUser) {
                 throw new Error('Could not remove recipe!');
             }
-            // Schema expecting User object as per schema defined in typeDefs
+            // Schema expecting User object as per mutation defined in typeDefs
             return updatedUser;
         },
     },
