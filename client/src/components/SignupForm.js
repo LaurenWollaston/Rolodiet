@@ -4,6 +4,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
+import './SignupForm.css'; // Import the CSS file
 
 const SignupForm = () => {
     const [userFormData, setUserFormData] = useState({ username: '', password: '', });
@@ -48,14 +49,15 @@ const SignupForm = () => {
 
     return (
         <>
-            <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-                <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+            <Form className='signup-form' noValidate validated={validated} onSubmit={handleFormSubmit}>
+                <Alert className='signup-alert' dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
                     We were unable to register your sign up!
                 </Alert>
 
-                <Form.Group className='mb-3'>
+                <Form.Group className='mb-3 signup-group'>
                     <Form.Label htmlFor='username'>Username</Form.Label>
                     <Form.Control
+                        className='signup-input'
                         type='text'
                         placeholder='Your username'
                         name='username'
@@ -66,9 +68,10 @@ const SignupForm = () => {
                     <Form.Control.Feedback type='invalid'>Username is required!</Form.Control.Feedback>
                 </Form.Group>
 
-                <Form.Group className='mb-3'>
+                <Form.Group className='mb-3 signup-group'>
                     <Form.Label htmlFor='password'>Password</Form.Label>
                     <Form.Control
+                        className='signup-input'
                         type='password'
                         placeholder='Your password'
                         name='password'
@@ -80,6 +83,7 @@ const SignupForm = () => {
                 </Form.Group>
 
                 <Button
+                    className='signup-button'
                     disabled={!(userFormData.username && userFormData.password)}
                     type='submit'
                     variant='success'>
