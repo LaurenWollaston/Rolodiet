@@ -8,7 +8,7 @@ import './SignupForm.css'; // Import the CSS file
 
 const SignupForm = () => {
     const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-    const [validated] = useState(false);
+    const [validated, setValidated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
     const handleInputChange = (event) => {
@@ -25,36 +25,31 @@ const SignupForm = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        setValidated(true);
+    
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+            return;
+        }
+    
         try {
-            await createUser({ variables: { input: { ...userFormData } } });
-
-        } catch (error) {
-            console.error(error); const form = event.currentTarget;
-            validated(true);
-            if (form.checkValidity() === false) {
-                event.stopPropagation();
-                return;
-            }
-
-            try {
-                const { data } = await create({
-                    variables: { input: userFormData },
-                });
-
-                AuthService.login(data.createUser.token);
-
-            } catch (error) {
-                console.error(error);
-                setShowAlert(true);
-            }
-
-            setUserFormData({
-                username: '',
-                email: '',
-                password: '',
+            const { data } = await createUser({
+                variables: { input: userFormData },
             });
-        };
+            AuthService.login(data.createUser.token);
+        } catch (error) {
+            console.error(error);
+            setShowAlert(true);
+        }
+    
+        setUserFormData({
+            username: '',
+            email: '',
+            password: '',
+        });
     };
+    
 
     return (
         <>
@@ -108,7 +103,7 @@ const SignupForm = () => {
 
                 <Button
                     className='signup-button'
-                    disabled={!(userFormData.username && userFormData.password)}
+                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
                     type='submit'
                     variant='success'>
                     Submit
