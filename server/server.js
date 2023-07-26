@@ -33,9 +33,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // If in production, serve client/build as static assets
-if (process.env.NODE_ENV === 'production') {
+
     app.use(express.static(path.join(__dirname, '../client/build')));
-}
+
+
+if (process.env.NODE_ENV !== 'production') {
+    // Serve the client development build for the React app
+    app.use(express.static(path.join(__dirname, '../client/public')));
+  }
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
