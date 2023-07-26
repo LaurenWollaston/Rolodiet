@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink, concat } from '@apollo/client';
 
 // Replace this with your GraphQL server endpoint
-const GRAPHQL_ENDPOINT = 'http://localhost:3001/graphql';
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_URI || 'http://localhost:3001/graphql';
 
 const httpLink = createHttpLink({
   uri: GRAPHQL_ENDPOINT,
