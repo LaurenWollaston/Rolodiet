@@ -11,7 +11,7 @@ import SignupForm from './components/SignupForm';
 
 // Create an instance of Apollo Client
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT || 'http://localhost:3001/graphql', // Replace this with your GraphQL server endpoint
+  uri: 'https://good-eats-b2abe2613d0c.herokuapp.com/graphql', // Replace this with your GraphQL server endpoint
   cache: new InMemoryCache(),
 });
 
