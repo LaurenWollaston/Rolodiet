@@ -1,11 +1,10 @@
-import { ApolloClient, InMemoryCache, createHttpLink} from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 // Replace this with your GraphQL server endpoint
-const GRAPHQL_ENDPOINT = 'http://localhost:3001/graphql';
 
 const httpLink = createHttpLink({
-  uri: GRAPHQL_ENDPOINT,
+  uri: http://localhost:5000/,
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -15,7 +14,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: localStorage.getItem("token) || ''
     }
   }
 });
