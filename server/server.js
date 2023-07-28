@@ -5,10 +5,7 @@ const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const mongoose = require('./config/connection');
 
-
-
 const app = express();
-
 
 const server = new ApolloServer({
     typeDefs,
@@ -26,16 +23,12 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
 }
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
-//Create instance of Apollo server with GraphQL schema
+//Start Apollo Server after connecting to MongoDB
 const startApollo = async () => {
     await server.start();
     server.applyMiddleware({ app, path: '/graphql' });
 
-    db.once('open', () => {
+    mongoose.connection.once('open', () => {
         app.listen(PORT, () => {
             console.log(`API initialized on localhost:${PORT}`);
             console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`)
