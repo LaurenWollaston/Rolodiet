@@ -1,121 +1,112 @@
-const { User, Recipe } = require('../models');
-const { signToken } = require('../utils/auth');
+const fetch = require('node-fetch');
+const User = require('../models/User');
+const Recipe = require('../models/Recipe');
+const { ApolloError } = require('apollo-server-express');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
-const resolvers = {
+module.exports = {
     Query: {
-        // Fetch single user by id or username
-        user: async (_, { id, username }) => {
-            return User.findOne({
-                $or: [{ _id: id }, { username }],
-            });
-        },
+        recipe: async (_, { term, limit }) => {
 
-        // Fetch logged-in user's data
-        me: async (_, __, context ) => {
-            if (!context.user) {
-                throw new Error('Not authenticated')
+            const response = await fetch(`https://api.edamam.com/api/recipes/v2?type=public&q=${term}&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`);
+
+            const data = await response.json();
+
+            if (!data.hits || !Array.isArray(data.hits)) {
+                throw new Error("No recipes found");
             }
-            // Find user in database if context.user is defined
-            return await User.findOne({ _id: context.user._id });
+
+            // Apply a limit of 5 recipes
+            const limitedRecipes = data.hits.slice(0, limit);
+
+            // Map the data to adapt to our defined schema
+            const recipesToSave = limitedRecipes.map(({ recipe }) => ({
+                uri: recipe.uri,
+                cuisineType: recipe.cuisineType,
+                dietLabels: recipe.dietLabels,
+                healthLabels: recipe.healthLabels,
+                ingredientLines: recipe.ingredientLines,
+                calories: recipe.calories,
+                image: recipe.image,
+                url: recipe.url
+            }));
+
+            await Recipe.insertMany(recipesToSave);
+
+            return recipesToSave;
         },
 
-        findAllRecipes: async (_, { page, perPage }) => {
-            try {
-                const startIndex = (page - 1) * perPage;
-                const endIndex = startIndex + perPage;
-
-                console.log('Fetching recipes from index:', startIndex, 'to', endIndex);
-
-                const recipes = await Recipe.find().skip(startIndex).limit(perPage);
-
-                return recipes;
-            } catch (error) {
-                console.error('Error fetching recipes:', error);
-                throw new Error('Failed to fetch recipes.');
-            }
-        },
-        autocompleteRecipes: async (_, { searchTerm }) => {
-            try {
-                // Find matches in database for submission
-                const recipes = await Recipe.find({
-                    title: { $regex: new RegExp(`.*${searchTerm}.*`, "i") },
-                }).limit(5); // Limit 5 results so we can reuse the print to cards thing.
-
-                return recipes;
-            } catch (error) {
-                console.error("Error fetching autocomplete recipes:", error);
-                throw new Error("Failed to fetch autocomplete recipes.");
-            }
-        },
+        user: async (_, { id }) => User.findById(id),
 
     },
     Mutation: {
-        // Create new user with signed webtoken and send to client
-        createUser: async (_, { input }) => {
-            // Check if user data exists before creating user with input username and email
-            const user = await User.findOne({ $of: [{ username: input.username }, { email: input.email }] });
+        registerUser: async (_, { registerInput: { username, email, password } }) => {
 
-            if (user) {
-                throw new Error('User already exists!');
+            // Check if user already exists with that email
+            const oldUser = await User.findOne({ email });
+
+            // If user exists, throw an error
+            if (oldUser) {
+                throw new ApolloError('User already exists with that email');
             }
 
-            const newUser = await User.create(input);
 
-            const token = signToken(newUser);
+            // Encrypt the password
+            const encryptedPassword = await bcrypt.hash(password, 10);
 
-            return { token, user: newUser };
-        },
+            // Build the mongoose user object
+            const newUser = new User({
+                username: username,
+                email: email.toLowerCase(),
+                password: encryptedPassword,
+            });
 
-        // Login user with email and password and send token to client
-        login: async (_, { input }) => {
-            const user = await User.findOne({ $or: [{ username: input.username }, { email: input.email }] });
-
-            if (!user) {
-                throw new Error('Incorrect username or password');
-            }
-
-            const correctPassword = await user.isCorrectPassword(input.password);
-
-            if (!correctPassword) {
-                throw new Error('Incorrect username or password')
-            }
-
-            const token = signToken(user);
-
-            return { token, user };
-        },
-
-        // Save recipe to user's 'savedRecipes' field by adding it to the set (preventing duplicates)
-        saveRecipe: async (_, { userId, recipe }) => {
-            const updatedUser = await User.findOneAndUpdate(
-                { _id: userId },
-                { $addToSet: { savedRecipes: recipe } },
-                { new: true, runValidators: true }
+            // Create JWT (attach to user object)
+            const token = jwt.sign(
+                { user_id: newUser._id, email },
+                "secret_is_out",
+                {
+                    expiresIn: "2h",
+                }
             );
 
-            if (!updatedUser) {
-                throw new Error('Could not save recipe!');
-            }
+            newUser.token = token;
 
-            // Schema expecting User object as per mutation defined in typeDefs
-            return updatedUser;
+            // Save the user to the database
+            const res = await newUser.save();
+
+            return {
+                id: res.id,
+                ...res._doc,
+            }
         },
 
-        // Remove recipe from user's 'savedRecipes' field by removing it from the set
-        removeRecipe: async (_, { userId, recipeId }) => {
-            const updatedUser = await User.fineOneAndUpdate(
-                { _id: userId },
-                { $pull: { savedRecipes: { recipeId } } },
-                { new: true }
-            );
+        loginUser: async (_, { loginInput: { email, password } }) => {
 
-            if (!updatedUser) {
-                throw new Error('Could not remove recipe!');
+            // Check if user exists with that email
+            const user = await User.findOne({ email });
+
+            // If user doesn't exist, throw an error
+            if (user && (await bcrypt.compare(password, user.password))) {
+                // Create JWT (attach to user object)
+                const token = jwt.sign(
+                    { user_id: user._id, email },
+                    "secret_is_out",
+                    {
+                        expiresIn: "2h",
+                    }
+                );
+                user.token = token;
+
+                return {
+                    id: user.id,
+                    ...user._doc,
+                }
+            } else {
+                // If user exists, but password is incorrect, throw an error
+                throw new ApolloError('Invalid password');
             }
-            // Schema expecting User object as per mutation defined in typeDefs
-            return updatedUser;
         },
     },
 };
-
-module.exports = resolvers;
