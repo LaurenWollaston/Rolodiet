@@ -1,67 +1,44 @@
-// Update the typeDefs to include the pagination arguments for findAllRecipes
 const { gql } = require('apollo-server-express');
 
-const typeDefs = gql`
-  type User {
-    _id: ID!
-    name: String!
-    email: String!
-    recipeCount: Int
-    savedRecipes: [Recipe]
-  }
+module.exports = gql`
 
   type Recipe {
-    _id: ID!
-    cuisine: String!
-    authors: [String]
-    description: String!
-    ingredients: [String]
-    title: String!
+    uri: String!
+    cuisineType: [String]
+    dietLabels: [String]
+    healthLabels: [String]
+    ingredientLines: [String]!
+    calories: Float!
     image: String
-    link: String
-  }
+    url: String
+}
 
-  type Auth {
-    token: ID!
-    user: User
-  }
-
-  input LoginInput {
-    email: String!
-    username: String!
-    password: String!
-  }
-
-  input CreateUserInput {
+type User {
     username: String!
     email: String!
     password: String!
-  }
+    token: String!
+}
 
-  input SaveRecipeInput {
-    recipeId: String!
-    authors: [String]
-    cusine: String!
-    description: String!
-    ingredients: String!
-    title: String!
-    image: String
-    link: String
-  }
+input RegisterInput {
+    username: String!
+    email: String!
+    password: String!
+    confirmPassword: String!
+}
 
-  type Query {
-    me: User
-    user(_id: ID, name: String): User!
-    findAllRecipes(page: Int, perPage: Int): [Recipe!]!
-    autocompleteRecipes(searchTerm: String): [Recipe!]!
-  }
+input LoginInput {
+    email: String!
+    password: String!
+}
 
-  type Mutation {
-    login(input: LoginInput!): Auth
-    createUser(input: CreateUserInput!): Auth
-    saveRecipe(userId: ID!, recipe: SaveRecipeInput!): User
-    removeRecipe(userId: ID!, recipeId: String!): User
-  }
+type Query {
+    recipe(term: String!): [Recipe!]!
+    user(id: ID!): User!
+}
+
+type Mutation {
+    registerUser(registerInput: RegisterInput): User!
+    loginUser(loginInput: LoginInput): User!
+}
 `;
-
-module.exports = typeDefs;
