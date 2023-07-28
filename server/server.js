@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  });
+});
 
 //Create instance of Apollo server with GraphQL schema
 const startApollo = async () => {
