@@ -1,26 +1,18 @@
+const { AuthenticationError } = require('apollo-server-express');
+
 const jwt = require('jsonwebtoken');
 
-// Configure Token secret and expiration
-const secret = 'nooneknowsmysecrets';
-const expiration = '2h';
-
-// Generate token
-function signToken({ username, email, _id }) {
-    const payload = { username, email, _id };
-
-    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-};
-function getUserFromToken(token) {
-    try {
-        const { data } = jwt.verify(token, secret, { maxAge: expiration });
-        return data;
-    } catch (error) {
-        console.error('Invalid Token');
-        return null;
+module.exports = (context) => {
+    const authHeader = context.req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split('Bearer')[1];
+        if(token) {
+            try {
+                const user = jwt.verify(token, "secret_is_out");
+                return user;
+            } catch (error) {
+                throw new AuthenticationError('Invalid/Expired token');
+            }
+        }
     }
-}
-
-module.exports = {
-    signToken,
-    getUserFromToken
 };
