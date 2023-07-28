@@ -1,17 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import './App.css';
-import MainPage from './components/MainPage';
-import Features from './components/Features';
-import About from './components/About';
-import LoginForm from './components/LoginForm';
-import SignupForm from './components/SignupForm';
+import MainPage from './pages/MainPage';
+import Features from './pages/Features';
+import About from './pages/About';
+import LoginForm from './pages/LoginForm';
+import SignupForm from './pages/SignupForm';
 
 function App() {
   return (
     <>
-      <Router>
         <div className="App">
           <Navbar />
           <Routes>
@@ -23,7 +22,6 @@ function App() {
             <Route path="*" element={<MainPage />} />
           </Routes>
         </div>
-      </Router>
     </>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import RecipeCard from "./recipeCard";
-import SearchComponent from "./SearchComponent";
+import RecipeCard from "../components/recipeCard";
+import SearchComponent from "../components/SearchComponent";
 import { useQuery, gql, useApolloClient } from "@apollo/client";
-import Modal from "./modal";
+import Modal from "../components/modal";
 
 import { AuthContext } from "../context/authContext";
 import { useContext } from "react";
