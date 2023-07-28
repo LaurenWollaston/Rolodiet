@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ selectedCard, closeModal }) => {
+function Modal({ selectedCard, closeModal }) {
   return (
     <div
       style={{

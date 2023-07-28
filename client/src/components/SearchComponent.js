@@ -12,8 +12,7 @@ query Autocomplete($searchTerm: String) {
   }
 }
 `;
-
-const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
+function SearchComponent({ onSearch, onAutocompleteItemClick }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [getAutocompleteRecipes, { loading, data }] = useLazyQuery(
     AUTOCOMPLETE_RECIPES_QUERY
@@ -33,9 +32,9 @@ const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
     onSearch(searchTerm);
   };
 
-  const handleAutocompleteItemClick = (title) => {
-    onAutocompleteItemClick(title);
-  };
+  // const handleAutocompleteItemClick = (title) => {
+  //   onAutocompleteItemClick(title);
+  // };
 
   return (
     <div>
@@ -72,17 +71,16 @@ const SearchComponent = ({ onSearch, onAutocompleteItemClick  }) => {
           <img src={searchIcon} alt="search button" width={size} height={size} />
         </button>
       </form>
-      {/* Display autocomplete suggestions */}
+      {/* Display autocomplete suggestions
       {loading && <p>Loading...</p>}
       {data && data.autocompleteRecipes && data.autocompleteRecipes.length > 0 && searchTerm !== "" && (
-        <div id="autocomplete" style={{textDecoration:'none',listStyleType:'none',justifyContent:'center',display:'flex',}}>
-          <ul style={{listStyleType:'none',color:'white',width:'30%',height:'auto',display:'flex', flexDirection:'column'}}>
+        <div id="autocomplete" style={{ textDecoration: 'none', listStyleType: 'none', justifyContent: 'center', display: 'flex', }}>
+          <ul style={{ listStyleType: 'none', color: 'white', width: '30%', height: 'auto', display: 'flex', flexDirection: 'column' }}>
             {data.autocompleteRecipes.map((recipe) => (
-              <li style={{margin:'.4vh', backgroundColor:'#000000b8',padding:'.5vh'}} class="autocompleteTab" key={`${recipe._id}${recipe.title}`} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+              <li style={{ margin: '.4vh', backgroundColor: '#000000b8', padding: '.5vh' }} class="autocompleteTab" key={`${recipe._id}${recipe.title}`} onClick={() => handleAutocompleteItemClick(recipe.title)}>{recipe.title}</li>
+            ))} */}
+          {/* </ul> */}
+      {/* )} */}
     </div>
   );
 };

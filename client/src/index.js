@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import client from './apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './context/auth';
+import { AuthProvider } from './context/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
