@@ -1,7 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { AuthContext } from '../context/authContext';
 import { useContext } from 'react';
-
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,8 +22,8 @@ function Navbar() {
         <Toolbar>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>Home</Link>
-            <Link to="/features">Features</Link>
-            <Link to="/about">About</Link>
+            <Link to="/features" style={{ textDecoration: 'none', color: 'white' }}>Features</Link>
+            <Link to="/about" style={{ textDecoration: 'none', color: 'white' }}>About</Link>
           </Typography>
           <Box alightitems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
 
