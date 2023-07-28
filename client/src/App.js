@@ -5,8 +5,8 @@ import './App.css';
 import MainPage from './pages/MainPage';
 import Features from './pages/Features';
 import About from './pages/About';
-import LoginForm from './pages/LoginForm';
-import Register from './pages/';
+import Login from './pages/login';
+import Register from './pages/register';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/features" element={<Features />} />
             <Route path="/about" element={<About />} />
-            <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<MainPage />} />
           </Routes>
