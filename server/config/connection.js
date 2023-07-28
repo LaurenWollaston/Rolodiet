@@ -1,5 +1,28 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/good-eats');
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+};
 
-module.exports = mongoose.connection;
+const connectToMongoDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, options);
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.log('Failed to connect to MongoDB server', error);
+        console.log('Attempting to connect to locally...');
+
+        try {
+            await mongoose.connect('mongodb://localhost:27017/', options);
+            console.log('Connected to local MongoDB');
+        } catch (localError) {
+            console.log('Failed to connect to locally...');
+            throw localError;
+        }
+    }
+};
+
+connectToMongoDB();
+
+module.exports = mongoose;
