@@ -1,21 +1,51 @@
-import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AuthContext } from '../context/authContext';
+import { useContext } from 'react';
 
-const NavigationBar = () => {
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
+function Navbar() {
+  let navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
+
+  const onLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  console.log(user);
+
   return (
-    <Navbar className="custom-navbar" bg="dark" variant="dark">
-      <Link className="navbar-brand" to="/home" style={{display:'inline-flex'}}><img src="/logo.webp" alt="Good Eats logo" width="80px" height="80px" /> <h2>Good Eats</h2></Link>
-      <Nav>
-        <Link className="nav-link" to="/home">Home</Link>
-        <Link className="nav-link" to="/features">Features</Link>
-        <Link className="nav-link" to="/about">About</Link>
-        <Link className="nav-link login-button" to="/login">Login</Link>
-        <Link className="nav-link register-button" to="/register">Register</Link>
-      </Nav>
-    </Navbar>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>Home</Link>
+            <Link to="/features">Features</Link>
+            <Link to="/about">About</Link>
+          </Typography>
+          <Box alightitems="right" sx={{ flexGrow: 1, textAlign: "right" }}>
+
+            {/* If user is logged in, show logout button, else show login and register buttons */}
+            {user ?
+              <>
+                <Button style={{ textDecoration: 'none', color: 'white' }} onClick={onLogout}>Logout</Button>
+              </>
+
+              :
+
+              <>
+                <Button color="inherit"><Link to="/login" style={{ textDecoration: 'none', color: 'white' }}>Login</Link></Button>
+                <Button color="inherit"><Link to="/register" style={{ textDecoration: 'none', color: 'white' }}>Register</Link></Button>
+              </>
+            }
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Box>
   );
 };
 
-export default NavigationBar;
+export default Navbar;

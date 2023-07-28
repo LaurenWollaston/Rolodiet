@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import Navbar from "./components/Navbar";
 import './App.css';
 import MainPage from './components/MainPage';
@@ -9,15 +8,9 @@ import About from './components/About';
 import LoginForm from './components/LoginForm';
 import SignupForm from './components/SignupForm';
 
-// Create an instance of Apollo Client
-const client = new ApolloClient({
-  uri: 'http://localhost:3001/graphql', // Replace this with your GraphQL server endpoint
-  cache: new InMemoryCache(),
-});
-
 function App() {
   return (
-    <ApolloProvider client={client}>
+    <>
       <Router>
         <div className="App">
           <Navbar />
@@ -31,7 +24,7 @@ function App() {
           </Routes>
         </div>
       </Router>
-    </ApolloProvider>
+    </>
   );
 }
 
