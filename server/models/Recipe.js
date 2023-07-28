@@ -1,38 +1,14 @@
-// name of dish (string, required), ingredients (array, required), 
-// recipe (string, req), authors (string, req)
-
-const { Schema, model } = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const recipeSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    ingredients: [
-        {
-            type: String,
-            required: true,
-        }
-    ],
-    description: {
-        type: String,
-        required: true,
-    },
-    authors: [
-        {
-            type: String,
-        },
-    ],
-    image: {
-        type: String,
-    },
-    link: {
-        type: String,
-    }
-    
+    uri: String,
+    cuisineType: [String],
+    dietLabels: [String],
+    healthLabels: [String],
+    ingredientLines: [String],
+    calories: Number,
+    image: String,
+    url: String
 });
 
-const Recipe = model('Recipe', recipeSchema);
-
-module.exports = Recipe
+module.exports = model('Recipe', recipeSchema);
