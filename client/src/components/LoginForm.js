@@ -1,52 +1,52 @@
-import React, { useState } from "react";
-import { useMutation } from '@apollo/client';
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/authContext";
+import { useForm } from "../utils/hooks";
+import { useMutation } from '@apollo/react-hooks';
 import { Form, Button, Alert } from 'react-bootstrap';
 import './LoginForm.css'; // Import the CSS file
 
-import { LOGIN_USER } from "../utils/mutations";
-import AuthService from '../utils/auth';
+import { gql } from 'graphql-tag';
+import { useNavigate } from "react-router-dom";
 
+const LOGIN_USER = gql`
+    mutation login(
+        $loginInput: LoginInput!
+    ) {
+        loginUser(
+            loginInput: $loginInput
+        ) {
+            email
+            username
+            token
+        }
+    }
+`;
 
 const LoginForm = () => {
-    const [userFormData, setUserFormData] = useState({ email: '', password: '' });
-    const [validated, setValidated] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
+    let navigate = useNavigate();
+    const context = useContext(AuthContext);
+    const [errors, setErrors] = useState([]);
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setUserFormData({ ...userFormData, [name]: value });
-    };
+    const loginUserCallback = () => {
+        console.log("Logging in user...")
+        loginUser();
+    }
 
-    const [login] = useMutation(LOGIN_USER);
-    
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        setValidated(true);
+    const { onChange, onSubmit, values } = useForm(loginUserCallback, {
+        email: '',
+        password: ''
+    });
 
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-            return;
-        }
-
-        try {
-            const { data } = await login({
-                variables: { input: userFormData },
-            });
-
-            
-            AuthService.login(data.login.token);
-            
-        } catch (error) {
-            console.error(error);
-            setShowAlert(true);
-        }
-
-        setUserFormData({
-            email: '',
-            password: '',
-        });
-    };
+    const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
+        update(proxy, { data: { loginUser: userData } }) {
+            context.login(userData);
+            navigate('/');
+        },
+        onError({ graphQLErrors }) {
+            setErrors(graphQLErrors);
+        },
+        variables: { loginInput: values }
+    });
 
     return (
         <>
