@@ -1,116 +1,88 @@
-import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { useContext, useState } from 'react';
+import { AuthContext } from '../context/authContext';
+import { useForm } from '../utils/hooks';
+import { useMutation } from '@apollo/react-hooks';
 
-import { useMutation } from '@apollo/client';
-import { CREATE_USER } from '../utils/mutations';
-import AuthService from '../utils/auth';
-import './SignupForm.css'; // Import the CSS file
+import { Button, TextField, Container, Stack, Alert } from '@mui/material';
 
-const SignupForm = () => {
-    const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-    const [validated, setValidated] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
+import { gql } from 'graphql-tag';
+import { useNavigate } from 'react-router-dom';
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setUserFormData({ ...userFormData, [name]: value });
-    };
-
-    const [createUser] = useMutation(CREATE_USER, {
-        onCompleted(data) {
-            const { token } = data.createUser;
-            AuthService.login(token);
+const REGISTER_USER = gql`
+    mutation Mutation(
+        $registerInput: RegisterInput!
+    ) {
+        registerUser(
+            registerInput: $registerInput
+        ) {
+            email
+            username
+            token
         }
+    }
+`;
+
+
+function Register() { 
+    const context = useContext(AuthContext);
+    let navigate = useNavigate();
+    const [ errors, setErrors ] = useState([]);
+
+    const registerUserCallback = () => {
+        console.log("Registering user...")
+        registerUser();
+    }
+
+    const { onChange, onSubmit, values } = useForm(registerUserCallback, {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     });
 
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        setValidated(true);
-    
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-            return;
-        }
-    
-        try {
-            const { data } = await createUser({
-                variables: { input: userFormData },
-            });
-            AuthService.login(data.createUser.token);
-        } catch (error) {
-            console.error(error);
-            setShowAlert(true);
-        }
-    
-        setUserFormData({
-            username: '',
-            email: '',
-            password: '',
-        });
-    };
-    
+    const [ registerUser] = useMutation(REGISTER_USER, {
+        update(_, { data:{ registerUser: userData }}) {
+            context.login(userData);
+            navigate('/');
+        },
+        onError({ graphQLErrors}) {
+            setErrors(graphQLErrors);
+        },
+        variables: { registerInput: values }
+    });
 
     return (
-        <>
-            <Form className='signup-form' noValidate validated={validated} onSubmit={handleFormSubmit}>
-                <Alert className='signup-alert' dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
-                    We were unable to register your sign up!
-                </Alert>
-
-
-                <Form.Group className='mb-3 signup-group'>
-                    <Form.Label htmlFor='username'>Username</Form.Label>
-                    <Form.Control
-                        className='signup-input'
-                        type='text'
-                        placeholder='Your username'
-                        name='username'
-                        onChange={handleInputChange}
-                        value={userFormData.username}
-                        required
+        <Container spacing={2} maxWidth="sm">
+            <h3>Register</h3>
+            <p>Register for a new account</p>
+            <Stack spacing={2} paddingBottom={2}>
+                <TextField
+                    label="Username"
+                    name="username"
+                    onChange={onChange}
                     />
-                    <Form.Control.Feedback type='invalid'>Username is required!</Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group className='mb-3 signup-group'>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    <Form.Control
-                        className='signup-input'
-                        type='text'
-                        placeholder='Your email'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email}
-                        required
+                <TextField
+                    label="Email"
+                    name="email"
+                    onChange={onChange}
                     />
-                    <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group className='mb-3 signup-group'>
-                    <Form.Label htmlFor='password'>Password</Form.Label>
-                    <Form.Control
-                        className='signup-input'
-                        type='password'
-                        placeholder='Your password'
-                        name='password'
-                        onChange={handleInputChange}
-                        value={userFormData.password}
-                        required
+                <TextField
+                    label="Password"
+                    name="password"
+                    onChange={onChange}
                     />
-                    <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
-                </Form.Group>
+                <TextField
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    onChange={onChange}
+                    />
+            </Stack>
+            {errors.map(error => (
+                <Alert severity="error">{error.message}</Alert>
+            ))}
+            <Button variant="contained" onClick={onSubmit}>Register</Button>
+        </Container>
+    )
+}
 
-                <Button
-                    className='signup-button'
-                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
-                    type='submit'
-                    variant='success'>
-                    Submit
-                </Button>
-            </Form>
-        </>
-    );
-};
-
-export default SignupForm;
+export default Register;
