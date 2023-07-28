@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import './App.css';
 import MainPage from './pages/MainPage';
 import Features from './pages/Features';
 import About from './pages/About';
 import LoginForm from './pages/LoginForm';
-import SignupForm from './pages/SignupForm';
+import Register from './pages/';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
             <Route path="/features" element={<Features />} />
             <Route path="/about" element={<About />} />
             <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<SignupForm />} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<MainPage />} />
           </Routes>
         </div>
